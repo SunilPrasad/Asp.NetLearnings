@@ -5,7 +5,7 @@ using Microsoft.Extensions.Caching.Hybrid;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi();
 
 builder.Services.AddSingleton<IProductRepository, InMemoryProductRepository>();
 builder.Services.AddSingleton<ProductService>();
@@ -32,13 +32,12 @@ builder.Services.AddHybridCache(options =>
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+app.MapOpenApi();
 
 app.MapGet("/", () => Results.Ok(new
 {
     message = "HybridCache sample is running.",
-    swagger = "/swagger"
+    openapi = "/openapi/v1.json"
 }));
 
 var products = app.MapGroup("/api/products");
